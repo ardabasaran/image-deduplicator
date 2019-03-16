@@ -15,16 +15,16 @@ import (
 var HASHALGORITHM = 1
 
 type ImageGroup struct {
-	ID uint64
-	Size uint64
+	ID     uint64
+	Size   uint64
 	Images []*ImageWithHash
 }
 
 type ImageWithHash struct {
-	FileName	string
-	FilePath	string
-	GroupID		uint64
-	HashValue	uint64
+	FileName  string
+	FilePath  string
+	GroupID   uint64
+	HashValue uint64
 }
 
 // Given a directory this function returns the list of image files in the directory (and in the subdirectories
@@ -42,7 +42,7 @@ func ListImagesInDir(dir string, recursive bool) ([]ImageWithHash, error) {
 	for _, file := range files {
 		// if it's a directory and subdirectories are included, do a recursive call
 		if file.IsDir() && recursive {
-			recursiveResult, recursiveErr := ListImagesInDir(dir + "/" + file.Name(), recursive)
+			recursiveResult, recursiveErr := ListImagesInDir(dir+"/"+file.Name(), recursive)
 			if recursiveErr != nil {
 				return make([]ImageWithHash, 0), recursiveErr
 			}
@@ -52,7 +52,7 @@ func ListImagesInDir(dir string, recursive bool) ([]ImageWithHash, error) {
 			continue
 		}
 		// if the file is an image, add it to the results
-		if checkFileType(file.Name(),dir) {
+		if checkFileType(file.Name(), dir) {
 			result = append(result, ImageWithHash{FileName: file.Name(), FilePath: dir, GroupID: 0, HashValue: 0})
 		}
 	}
@@ -90,7 +90,7 @@ func GroupImages(images []ImageWithHash, threshold uint64, verbose bool) []Image
 				size++
 			}
 		}
-		groups = append(groups, ImageGroup{ID:idCount, Size:size, Images:imagesInTheGroup})
+		groups = append(groups, ImageGroup{ID: idCount, Size: size, Images: imagesInTheGroup})
 		if verbose {
 			fmt.Printf("\tGroup %d has size %d\n", groups[idCount-1].ID, groups[idCount-1].Size)
 		}
@@ -161,7 +161,3 @@ func checkFileType(name, dir string) bool {
 
 	return false
 }
-
-
-
-
