@@ -15,7 +15,7 @@ func main() {
 	algoFlagPtr := flag.Int("algo", 3, "Indicates the algorithm that is to be used for hashing.\n1-aHash, 2-pHash, 3-dHash")
 	verboseFlagPtr := flag.Bool("v", false, "Indicates whether the program should print out logs.")
 	directoryFlagPtr := flag.String("dir", "./", "Indicates the directory the program will run on.")
-	thresholdFlagPtr := flag.Uint64("t", 5, "Indicates the threshold value for the grouping, smaller threshold value yield to higher confidence in results")
+	thresholdFlagPtr := flag.Uint64("t", 15, "Indicates the threshold value for the grouping, smaller threshold value yield to higher confidence in results")
 	moveFlagPtr := flag.Bool("m", false, "Indicates whether the program should move the similar images in the same group folder.")
 	flag.Parse()
 
