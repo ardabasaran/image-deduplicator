@@ -76,22 +76,23 @@ func GroupImages(images []ImageWithHash, threshold uint64, verbose bool) []Image
 		if images[i].GroupID != 0 {
 			continue
 		}
-
 		imagesInTheGroup := make([]*ImageWithHash, 0)
 		imagesInTheGroup = append(imagesInTheGroup, &images[i])
+		images[i].GroupID = idCount
 		size := uint64(1)
 		for j := i + 1; j < len(images); j++ {
 			if images[j].GroupID != 0 {
 				continue
 			}
 			if imghash.HammingDistance(images[i].HashValue, images[j].HashValue) < threshold {
+				images[j].GroupID = idCount
 				imagesInTheGroup = append(imagesInTheGroup, &images[j])
 				size++
 			}
 		}
 		groups = append(groups, ImageGroup{ID:idCount, Size:size, Images:imagesInTheGroup})
 		if verbose {
-			fmt.Printf("\tGroup %d has size %d\n", groups[i].ID, groups[i].Size)
+			fmt.Printf("\tGroup %d has size %d\n", groups[idCount-1].ID, groups[idCount-1].Size)
 		}
 		idCount++
 	}
@@ -108,11 +109,11 @@ func HashImages(images []ImageWithHash, verbose bool) {
 		fmt.Println("Started hashing images")
 	}
 	for i := range images {
-		if verbose {
-			fmt.Printf("\tHashing image %d/%d\n", i+1, len(images))
-		}
 		img := readImage(images[i])
 		images[i].HashValue = hashImage(img)
+		if verbose {
+			fmt.Printf("\t%d/%d Image: %s\tHash: %064b \n", i+1, len(images), images[i].FileName, images[i].HashValue)
+		}
 	}
 	if verbose {
 		fmt.Println("Finished hashing images")
